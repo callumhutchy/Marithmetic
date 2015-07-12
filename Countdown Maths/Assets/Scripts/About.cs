@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class About : MonoBehaviour {
 
@@ -26,8 +27,12 @@ public class About : MonoBehaviour {
 	}
 	public void OnMyAppsClick(){
 		Application.OpenURL("https://play.google.com/store/search?q=callumhutchy&c=apps");
-		
 	}
+
+	public void OnRateButtonClick(){
+		Application.OpenURL ("https://play.google.com/store/apps/details?id=uk.co.callumhutchy.marithmetic");
+	}
+
 	public void OnBackButtonClick(){
 		MainMenuCanvas.SetActive (true);
 		AboutCanvas.SetActive (false);

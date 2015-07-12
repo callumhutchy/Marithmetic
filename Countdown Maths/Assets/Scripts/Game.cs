@@ -13,12 +13,11 @@ public class Game : MonoBehaviour {
 
 	public static bool reset = false;
 
-	public Text number1;
-	public Text number2;
-	public Text number3;
-	public Text number4;
-	public Text number5;
-	public Text number6;
+
+	public static int numberOfBigs = 0;
+	public static int numberOfSmalls = 0;
+
+	public Text number1, number2, number3, number4, number5, number6;
 
 	public Text number1Disabled;
 	public Text number2Disabled;
@@ -66,6 +65,7 @@ public class Game : MonoBehaviour {
 
 	public GameObject subtractAlert;
 	public GameObject divisionAlert;
+	public GameObject homeAlert;
 
 	GameObject tempButton1;
 	GameObject tempButton1Disabled;
@@ -91,29 +91,13 @@ public class Game : MonoBehaviour {
 	public Text totalNumberText;
 
 	public void OnGameBackButtonClick(){
-		ClearArray ();
-		DisplayNumbers ();
-		MainMenuCanvas.SetActive (true);
-		GameCanvas.SetActive (false);
+		homeAlert.SetActive (true);
 
 	}
 
 	// Use this for initialization
 	void Start () {
-		totalArrayList.Clear (); 
-		numberArray = CustomGame.numberArray;
-		number1selected = operationselected = number2selected = false;
-		ResetButtons ();
-
-
-		for (int i = 0; i< numberArray.Length; i++) {
-		
-			totalArrayList.Add(numberArray[i]);
-		
-		}
-		DisplayNumbers ();
-	//	totalArrayList = ShuffleList (totalArrayList);
-		totalArrayList.CopyTo (numberArray);
+		Reset ();
 		totalNumber = GenerateSuitableNumber ();
 		totalNumberText.text = totalNumber.ToString ();
 		reset = false;
@@ -125,7 +109,7 @@ public class Game : MonoBehaviour {
 		numberArray = CustomGame.numberArray;
 		number1selected = operationselected = number2selected = false;
 		ResetButtons ();
-		
+		ResetTextArea ();
 		
 		for (int i = 0; i< numberArray.Length; i++) {
 			
@@ -172,6 +156,28 @@ public class Game : MonoBehaviour {
 			if(usersTotal == totalNumber){
 				ClearArray ();
 				DisplayNumbers ();
+				if(PlayerPrefs.GetInt(References.LOWEST_NUMBER_SOLVED) < 100 && totalNumber >= 100){
+					PlayerPrefs.SetInt(References.LOWEST_NUMBER_SOLVED, totalNumber);
+				}else if(PlayerPrefs.GetInt(References.LOWEST_NUMBER_SOLVED) >= 100 && PlayerPrefs.GetInt(References.LOWEST_NUMBER_SOLVED) > totalNumber){
+					PlayerPrefs.SetInt(References.LOWEST_NUMBER_SOLVED, totalNumber);
+				}
+				if(PlayerPrefs.GetInt(References.HIGHEST_NUMBER_SOLVED) < 100 && totalNumber >= 100){
+					PlayerPrefs.SetInt(References.HIGHEST_NUMBER_SOLVED, totalNumber);
+				}else if(PlayerPrefs.GetInt(References.HIGHEST_NUMBER_SOLVED) >= 100 && PlayerPrefs.GetInt(References.HIGHEST_NUMBER_SOLVED) < totalNumber){
+					PlayerPrefs.SetInt(References.HIGHEST_NUMBER_SOLVED, totalNumber);
+				}
+
+				PlayerPrefs.SetInt(References.SMALL_NUMBERS_USED, PlayerPrefs.GetInt(References.SMALL_NUMBERS_USED) + numberOfSmalls);
+
+				PlayerPrefs.SetInt(References.BIG_NUMBERS_USED, PlayerPrefs.GetInt(References.BIG_NUMBERS_USED) + numberOfBigs);
+
+				if(numberOfBigs == 4){
+					PlayerPrefs.SetInt(References.HOW_MANY_BIG, PlayerPrefs.GetInt(References.HOW_MANY_BIG) + 1);
+				}
+
+
+
+				PlayerPrefs.SetInt(References.TOTAL_NUMBERS_SOLVED, PlayerPrefs.GetInt(References.TOTAL_NUMBERS_SOLVED) + 1);
 				GameCompleteCanvas.SetActive(true);
 				GameCanvas.SetActive(false);
 
@@ -179,6 +185,7 @@ public class Game : MonoBehaviour {
 
 			if(usersTotal == -1){
 				subtractAlert.SetActive(true);
+				ClearLastLine();
 				tempButton1Disabled.SetActive(false);
 				tempButton2Disabled.SetActive(false);
 				tempOperationButtonDisabled.SetActive(false);
@@ -189,6 +196,7 @@ public class Game : MonoBehaviour {
 			}else if(usersTotal == -2){
 
 				divisionAlert.SetActive(true);
+				ClearLastLine();
 				tempButton1Disabled.SetActive(false);
 				tempButton2Disabled.SetActive(false);
 				tempOperationButtonDisabled.SetActive(false);
@@ -207,6 +215,7 @@ public class Game : MonoBehaviour {
 				tempButton2Grey .SetActive(true);
 				tempOperationButtonDisabled.SetActive(false);
 				tempOperationButton.GetComponent<Button>().enabled = true;
+				addToTextArea("= " + usersTotal.ToString());
 				number1selected = operationselected = number2selected = false;
 
 			}
@@ -445,15 +454,40 @@ public class Game : MonoBehaviour {
 
 	}
 
+	void ResetTextArea(){
+		mathsTextString = "";
+		mathsTextArea.text = mathsTextString;
+		currentTextNumber = 0;
+		mathsTextLine = 1;
+
+	}
+
+	void ClearLastLine(){
+		mathsTextLine--;
+		currentTextNumber = 0;
+		mathsTextString = mathsTextString.Substring (0, mathsTextString.LastIndexOf (tempButton1.GetComponentInChildren<Text>().text.ToString() + " " + tempOperationButton.GetComponentInChildren<Text>().text.ToString() + " " + tempButton2.GetComponentInChildren<Text>().text.ToString() + " "));
+		Debug.Log (mathsTextString);
+		mathsTextArea.text = mathsTextString;
+	}
+
 	void addToTextArea(string text){
 		mathsTextString += text.ToString() + " ";
 		currentTextNumber++;
 		if (currentTextNumber == 4) {
 			mathsTextLine++;
 			mathsTextString = mathsTextString + "\n";
+			currentTextNumber = 0;
 		}
 		Debug.Log (mathsTextString);
 		mathsTextArea.text = mathsTextString;
+	}
+
+	void takeAwayText(string removeChar){
+		mathsTextString = mathsTextString.Substring (0, mathsTextString.LastIndexOf (removeChar + " "));
+		currentTextNumber--;
+		Debug.Log (mathsTextString);
+		mathsTextArea.text = mathsTextString;
+
 	}
 
 	public void ResetButtons(){
@@ -508,6 +542,7 @@ public class Game : MonoBehaviour {
 			userNumber1 = int.Parse (button1.GetComponentInChildren<Text> ().text);
 		} else if (number1selected == true && operationselected == true && number2selected == false) {
 			button1.GetComponent<Button> ().enabled = false;
+			addToTextArea(button1.GetComponentInChildren<Text> ().text);
 			button1Disabled.SetActive (true);
 			number2selected = true;
 			tempButton2 = button1;
@@ -529,6 +564,7 @@ public class Game : MonoBehaviour {
 
 		} else if (number1selected == true && operationselected == true && number2selected == false) {
 			button2.GetComponent<Button> ().enabled = false;
+			addToTextArea(button2.GetComponentInChildren<Text> ().text);
 			button2Disabled.SetActive (true);
 			number2selected = true;
 			tempButton2 = button2;
@@ -550,6 +586,7 @@ public class Game : MonoBehaviour {
 			userNumber1 = int.Parse( button3.GetComponentInChildren<Text>().text);
 		} else if (number1selected == true && operationselected == true && number2selected == false) {
 			button3.GetComponent<Button> ().enabled = false;
+			addToTextArea(button3.GetComponentInChildren<Text> ().text);
 			button3Disabled.SetActive(true);
 			number2selected = true;
 			tempButton2 = button3;
@@ -570,6 +607,7 @@ public class Game : MonoBehaviour {
 			userNumber1 = int.Parse( button4.GetComponentInChildren<Text>().text);
 		} else if (number1selected == true && operationselected == true && number2selected == false) {
 			button4.GetComponent<Button> ().enabled = false;
+			addToTextArea(button4.GetComponentInChildren<Text> ().text);
 			button4Disabled.SetActive(true);
 			number2selected = true;
 			tempButton2 = button4;
@@ -590,6 +628,7 @@ public class Game : MonoBehaviour {
 			userNumber1 = int.Parse(button5.GetComponentInChildren<Text>().text);
 		} else if (number1selected == true && operationselected == true && number2selected == false) {
 			button5.GetComponent<Button> ().enabled = false;
+			addToTextArea(button5.GetComponentInChildren<Text> ().text);
 			button5Disabled.SetActive(true);
 			number2selected = true;
 			tempButton2 = button5;
@@ -610,6 +649,7 @@ public class Game : MonoBehaviour {
 			userNumber1 = int.Parse( button6.GetComponentInChildren<Text>().text);
 		} else if (number1selected == true && operationselected == true && number2selected == false) {
 			button6.GetComponent<Button> ().enabled = false;
+			addToTextArea(button6.GetComponentInChildren<Text> ().text);
 			button6Disabled.SetActive(true);
 			number2selected = true;
 			tempButton2 = button6;
@@ -622,7 +662,7 @@ public class Game : MonoBehaviour {
 	public void OnNumberButton1DisabledClick(){
 		if (number1selected == true && operationselected == false && number2selected == false) {
 			button1.GetComponent<Button> ().enabled = true;
-
+			takeAwayText(button1.GetComponentInChildren<Text>().text);
 			button1Disabled.SetActive (false);
 			number1selected = false;
 		}
@@ -630,6 +670,7 @@ public class Game : MonoBehaviour {
 	public void OnNumberButton2DisabledClick(){
 		if (number1selected == true && operationselected == false && number2selected == false) {
 			button2.GetComponent<Button> ().enabled = true;
+			takeAwayText(button2.GetComponentInChildren<Text>().text);
 			button2Disabled.SetActive (false);
 			number1selected = false;
 		}
@@ -637,6 +678,7 @@ public class Game : MonoBehaviour {
 	public void OnNumberButton3DisabledClick(){
 		if (number1selected == true && operationselected == false && number2selected == false) {
 			button3.GetComponent<Button> ().enabled = true;
+			takeAwayText(button3.GetComponentInChildren<Text>().text);
 			button3Disabled.SetActive (false);
 			number1selected = false;
 		}
@@ -644,6 +686,7 @@ public class Game : MonoBehaviour {
 	public void OnNumberButton4DisabledClick(){
 		if (number1selected == true && operationselected == false && number2selected == false) {
 			button4.GetComponent<Button> ().enabled = true;
+			takeAwayText(button4.GetComponentInChildren<Text>().text);
 			button4Disabled.SetActive (false);
 			number1selected = false;
 		}
@@ -651,6 +694,7 @@ public class Game : MonoBehaviour {
 	public void OnNumberButton5DisabledClick(){
 		if (number1selected == true && operationselected == false && number2selected == false) {
 			button5.GetComponent<Button> ().enabled = true;
+			takeAwayText(button5.GetComponentInChildren<Text>().text);
 			button5Disabled.SetActive (false);
 			number1selected = false;
 		}
@@ -658,13 +702,14 @@ public class Game : MonoBehaviour {
 	public void OnNumberButton6DisabledClick(){
 		if (number1selected == true && operationselected == false && number2selected == false) {
 			button6.GetComponent<Button> ().enabled = true;
+			takeAwayText(button6.GetComponentInChildren<Text>().text);
 			button6Disabled.SetActive (false);
 			number1selected = false;
 		}
 	}
 
 	public void OnAddButtonClick(){
-		if (!operationselected) {	
+		if (number1selected && !operationselected && !number2selected) {	
 			addButton.GetComponent<Button> ().enabled = false;
 			addToTextArea(addButton.GetComponentInChildren<Text> ().text);
 			addButtonDisabled.SetActive (true);
@@ -681,7 +726,7 @@ public class Game : MonoBehaviour {
 
 	}
 	public void OnSubtractButtonClick(){
-		if (!operationselected) {
+		if (number1selected && !operationselected && !number2selected) {
 			subtractButton.GetComponent<Button> ().enabled = false;
 			addToTextArea(subtractButton.GetComponentInChildren<Text> ().text);
 			subtractButtonDisabled.SetActive(true);
@@ -697,7 +742,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 	public void OnMultiplyButtonClick(){
-		if (!operationselected) {
+		if (number1selected && !operationselected && !number2selected) {
 			multiplyButton.GetComponent<Button> ().enabled = false;
 			addToTextArea(multiplyButton.GetComponentInChildren<Text> ().text);
 			multiplyButtonDisabled.SetActive(true);
@@ -713,7 +758,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 	public void OnDivideButtonClick(){
-		if (!operationselected) {
+		if (number1selected && !operationselected && !number2selected) {
 			divideButton.GetComponent<Button> ().enabled = false;
 			addToTextArea(divideButton.GetComponentInChildren<Text> ().text);
 			divideButtonDisabled.SetActive(true);
@@ -732,6 +777,7 @@ public class Game : MonoBehaviour {
 	public void OnAddButtonDisabledClick(){
 		if (number1selected == true && operationselected == true && number2selected == false) {
 			addButton.GetComponent<Button> ().enabled = true;
+			takeAwayText(addButton.GetComponentInChildren<Text>().text);
 			addButtonDisabled.SetActive (false);
 			operationselected = false;
 		}
@@ -739,6 +785,7 @@ public class Game : MonoBehaviour {
 	public void OnSubtractButtonDisabledClick(){
 		if (number1selected == true && operationselected == true && number2selected == false) {
 			subtractButton.GetComponent<Button> ().enabled = true;
+			takeAwayText(subtractButton.GetComponentInChildren<Text>().text);
 			subtractButtonDisabled.SetActive (false);
 			operationselected = false;
 		}
@@ -746,6 +793,7 @@ public class Game : MonoBehaviour {
 	public void OnMultiplyButtonDisabledClick(){
 		if (number1selected == true && operationselected == true && number2selected == false) {
 			multiplyButton.GetComponent<Button> ().enabled = true;
+			takeAwayText(multiplyButton.GetComponentInChildren<Text>().text);
 			multiplyButtonDisabled.SetActive (false);
 			operationselected = false;
 		}
@@ -753,6 +801,7 @@ public class Game : MonoBehaviour {
 	public void OnDivideButtonDisabledClick(){
 		if (number1selected == true && operationselected == true && number2selected == false) {
 			divideButton.GetComponent<Button> ().enabled = true;
+			takeAwayText(divideButton.GetComponentInChildren<Text>().text);
 			divideButtonDisabled.SetActive (false);
 			operationselected = false;
 		}
@@ -766,8 +815,20 @@ public class Game : MonoBehaviour {
 		divisionAlert.SetActive (false);
 	}
 
+	public void OnHomeAlertYesButtonClick(){
+		ClearArray ();
+		DisplayNumbers ();
+		homeAlert.SetActive (false);
+		MainMenuCanvas.SetActive (true);
+		GameCanvas.SetActive (false);
+	}
+	public void OnHomeAlertNoButtonClick(){
+		homeAlert.SetActive (false);
+	}
+
 	public void OnResetButtonClick(){
 		//Start ();
+		PlayerPrefs.SetInt (References.NUMBER_OF_RESETS, PlayerPrefs.GetInt (References.NUMBER_OF_RESETS) + 1);
 		Reset ();
 	}
 

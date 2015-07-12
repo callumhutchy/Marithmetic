@@ -8,6 +8,7 @@ public class CustomGame : MonoBehaviour {
 	public static int[] transferArray = new int[6];
 	int maxAmountOfNumbers = 6;
 	int numberOfHighNumbers = 0;
+	int numberOfSmall = 0;
 	int currentPosition = 0;
 
 	public GameObject MainMenu;
@@ -15,6 +16,10 @@ public class CustomGame : MonoBehaviour {
 	public GameObject GameCanvas;
 
 	public GameObject bigNumberAlert;
+	public GameObject enoughNumbersAlert;
+
+
+
 
 	public Text number1;
 	public Text number2;
@@ -47,13 +52,18 @@ public class CustomGame : MonoBehaviour {
 			addNumberToArray (GenerateHighNumber ());
 			numberOfHighNumbers++;
 		} else if (numberOfHighNumbers >= 4) {
-			bigNumberAlert.SetActive(true);
+			bigNumberAlert.SetActive (true);
+		} else if (currentPosition >= maxAmountOfNumbers) {
+			enoughNumbersAlert.SetActive(true);
 		}
 	}
 
 	public void OnLowClick(){
 		if (currentPosition < maxAmountOfNumbers) {
 			addNumberToArray(GenerateLowNumber());
+			numberOfSmall++;
+		}else if (currentPosition >= maxAmountOfNumbers) {
+			enoughNumbersAlert.SetActive(true);
 		}
 	}
 
@@ -133,14 +143,7 @@ public class CustomGame : MonoBehaviour {
 			}
 			break;
 		}
-		/*
-		if (currentPosition == 4 && checkIfArrayContains (25) && checkIfArrayContains (50) && checkIfArrayContains (75) && checkIfArrayContains (100)) {
-			number  = generateHighNumberAtEnd();
-		}
-		if (currentPosition == 5 && checkIfArrayContains (25) && checkIfArrayContains (50) && checkIfArrayContains (75) && checkIfArrayContains (100)) {
-			number  = generateHighNumberAtEnd();
-		}
-*/
+
 		return number;
 
 	}
@@ -265,8 +268,11 @@ public class CustomGame : MonoBehaviour {
 		for (int i = 0; i < numberArray.Length; i++) {
 			Debug.Log(numberArray[i] + " before");
 		}
+		Game.numberOfBigs = numberOfHighNumbers;
+		Game.numberOfSmalls = numberOfSmall;
 		currentPosition = 0;
 		numberOfHighNumbers = 0;
+		numberOfSmall = 0;
 		GameCanvas.SetActive (true);
 		Game.numberArray = numberArray;
 		Game.reset = true;
@@ -287,6 +293,10 @@ public class CustomGame : MonoBehaviour {
 		}
 		return false;
 
+	}
+
+	public void OnEnoughNumbersAlertOkButtonClick(){
+		enoughNumbersAlert.SetActive (false);
 	}
 
 

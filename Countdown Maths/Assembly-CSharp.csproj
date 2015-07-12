@@ -46,26 +46,16 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Examples\MuffinRush\Example.cs" />
-     <Compile Include="Assets\Examples\MuffinRush\ExampleEventHandler.cs" />
-     <Compile Include="Assets\Examples\MuffinRush\ExampleWindow.cs" />
-     <Compile Include="Assets\Examples\MuffinRush\MuffinRushAssets.cs" />
      <Compile Include="Assets\Scripts\About.cs" />
      <Compile Include="Assets\Scripts\CanvasSwitching.cs" />
      <Compile Include="Assets\Scripts\CustomGame.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />
+     <Compile Include="Assets\Scripts\References.cs" />
+     <Compile Include="Assets\Scripts\Statistics.cs" />
      <Compile Include="Assets\Scripts\Stats.cs" />
-     <Compile Include="Assets\Scripts\Store.cs" />
-     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
-     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
-     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{312D20F4-584C-B245-F03E-4E49D6E32219}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
