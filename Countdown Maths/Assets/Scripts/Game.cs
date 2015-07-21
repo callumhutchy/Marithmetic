@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+
 public class Game : MonoBehaviour {
 
 	public static int[] numberArray = new int[6];
@@ -19,12 +20,7 @@ public class Game : MonoBehaviour {
 
 	public Text number1, number2, number3, number4, number5, number6;
 
-	public Text number1Disabled;
-	public Text number2Disabled;
-	public Text number3Disabled;
-	public Text number4Disabled;
-	public Text number5Disabled;
-	public Text number6Disabled;
+	public Text number1Disabled, number2Disabled, number3Disabled, number4Disabled, number5Disabled, number6Disabled;
 
 	public Text mathsTextArea;
 	string mathsTextString = "";
@@ -32,40 +28,21 @@ public class Game : MonoBehaviour {
 	int mathsTextLine = 1;
 	int currentTextNumber = 0;
 
-	public GameObject button1;
-	public GameObject button2; 
-	public GameObject button3;
-	public GameObject button4;
-	public GameObject button5;
-	public GameObject button6;
+	public GameObject button1, button2, button3, button4, button5, button6;
 
-	public GameObject button1Disabled;
-	public GameObject button2Disabled; 
-	public GameObject button3Disabled;
-	public GameObject button4Disabled;
-	public GameObject button5Disabled;
-	public GameObject button6Disabled;
+	public GameObject button1Disabled, button2Disabled, button3Disabled, button4Disabled, button5Disabled, button6Disabled;
 
-	public GameObject button1Grey;
-	public GameObject button2Grey; 
-	public GameObject button3Grey;
-	public GameObject button4Grey;
-	public GameObject button5Grey;
-	public GameObject button6Grey;
+	public GameObject button1Grey, button2Grey, button3Grey, button4Grey, button5Grey, button6Grey;
 
-	public GameObject addButton;
-	public GameObject subtractButton;
-	public GameObject multiplyButton;
-	public GameObject divideButton;
+	public GameObject addButton, subtractButton, multiplyButton, divideButton;
 
-	public GameObject addButtonDisabled;
-	public GameObject subtractButtonDisabled;
-	public GameObject multiplyButtonDisabled;
-	public GameObject divideButtonDisabled;
+	public GameObject addButtonDisabled, subtractButtonDisabled, multiplyButtonDisabled, divideButtonDisabled;
 
 	public GameObject subtractAlert;
 	public GameObject divisionAlert;
 	public GameObject homeAlert;
+
+	public GameObject timeTotal;
 
 	GameObject tempButton1;
 	GameObject tempButton1Disabled;
@@ -85,6 +62,10 @@ public class Game : MonoBehaviour {
 	string userOperation;
 	int usersTotal = 0;
 
+	public static float startTime;
+	float updatedTime;
+	float finalTime;
+	string textTime;
 
 
 	int totalNumber;
@@ -95,11 +76,13 @@ public class Game : MonoBehaviour {
 
 	}
 
+
 	// Use this for initialization
 	void Start () {
 		Reset ();
 		totalNumber = GenerateSuitableNumber ();
 		totalNumberText.text = totalNumber.ToString ();
+
 		reset = false;
 
 	}
@@ -140,7 +123,12 @@ public class Game : MonoBehaviour {
 		numberArray = new int[6];
 	}
 
-	
+	void ConvertTime(){
+
+
+	}
+
+
 	// Update is called once per frame
 	void Update () {
 
@@ -148,14 +136,29 @@ public class Game : MonoBehaviour {
 			ClearArray();
 			Start();
 			reset = false;
-
+			startTime = Time.time;
+			
 		}
+
+		updatedTime = Time.time - startTime;
+
+		Debug.Log (updatedTime.ToString ());
+		int minutes = (int) updatedTime / 60;
+		int seconds = (int) updatedTime % 60;
+
+		textTime = string.Format ("{0:00}:{1:00}", minutes, seconds);
+
+		timeTotal.GetComponentInChildren<Text> ().text = textTime;
+
+
+
 		if (number1selected && operationselected && number2selected) {
 
 			usersTotal = applyOperation();
 			if(usersTotal == totalNumber){
 				ClearArray ();
 				DisplayNumbers ();
+
 				if(PlayerPrefs.GetInt(References.LOWEST_NUMBER_SOLVED) < 100 && totalNumber >= 100){
 					PlayerPrefs.SetInt(References.LOWEST_NUMBER_SOLVED, totalNumber);
 				}else if(PlayerPrefs.GetInt(References.LOWEST_NUMBER_SOLVED) >= 100 && PlayerPrefs.GetInt(References.LOWEST_NUMBER_SOLVED) > totalNumber){
@@ -171,6 +174,18 @@ public class Game : MonoBehaviour {
 
 				PlayerPrefs.SetInt(References.BIG_NUMBERS_USED, PlayerPrefs.GetInt(References.BIG_NUMBERS_USED) + numberOfBigs);
 
+				finalTime = updatedTime;
+
+				if(PlayerPrefs.GetInt(References.FASTEST_TIME) > (int) finalTime ){
+					PlayerPrefs.SetInt(References.FASTEST_TIME, (int) finalTime);
+				}else if(PlayerPrefs.GetInt(References.FASTEST_TIME) < 1){
+					PlayerPrefs.SetInt(References.FASTEST_TIME, (int) finalTime);
+
+				}
+
+				PlayerPrefs.SetInt(References.RECENT_TIME, (int)finalTime);
+
+
 				if(numberOfBigs == 4){
 					PlayerPrefs.SetInt(References.HOW_MANY_BIG, PlayerPrefs.GetInt(References.HOW_MANY_BIG) + 1);
 				}
@@ -178,6 +193,9 @@ public class Game : MonoBehaviour {
 
 
 				PlayerPrefs.SetInt(References.TOTAL_NUMBERS_SOLVED, PlayerPrefs.GetInt(References.TOTAL_NUMBERS_SOLVED) + 1);
+				Reset ();
+				ClearArray ();
+				DisplayNumbers ();
 				GameCompleteCanvas.SetActive(true);
 				GameCanvas.SetActive(false);
 
@@ -818,6 +836,7 @@ public class Game : MonoBehaviour {
 	public void OnHomeAlertYesButtonClick(){
 		ClearArray ();
 		DisplayNumbers ();
+		Reset ();
 		homeAlert.SetActive (false);
 		MainMenuCanvas.SetActive (true);
 		GameCanvas.SetActive (false);

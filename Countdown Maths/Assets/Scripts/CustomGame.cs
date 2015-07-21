@@ -257,6 +257,7 @@ public class CustomGame : MonoBehaviour {
 	public void OnCustomGameSetupBackButtonClick(){
 		ClearArray ();
 		DisplayNumbers ();
+		numberOfHighNumbers = 0;
 		currentPosition = 0;
 		MainMenu.SetActive(true);
 		CustomGameSetup.SetActive(false);
@@ -276,6 +277,7 @@ public class CustomGame : MonoBehaviour {
 		GameCanvas.SetActive (true);
 		Game.numberArray = numberArray;
 		Game.reset = true;
+		Game.startTime = Time.time;
 		CustomGameSetup.SetActive (false);
 
 	}

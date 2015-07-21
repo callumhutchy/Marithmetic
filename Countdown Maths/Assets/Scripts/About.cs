@@ -18,7 +18,7 @@ public class About : MonoBehaviour {
 	}
 
 	public void OnWebsiteLinkClick(){
-		Application.OpenURL("www.callumhutchy.co.uk/mental-maths/");
+		Application.OpenURL("www.callumhutchy.co.uk/marithmetic/");
 
 	}
 	public void OnTwitterClick(){

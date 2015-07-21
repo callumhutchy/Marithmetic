@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\About.cs" />
      <Compile Include="Assets\Scripts\CanvasSwitching.cs" />
+     <Compile Include="Assets\Scripts\CompleteGame.cs" />
      <Compile Include="Assets\Scripts\CustomGame.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Scripts\References.cs" />
