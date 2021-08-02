@@ -5,10 +5,6 @@ using System.IO;
 using System.Net;
 using System;
 using UnityEngine.SocialPlatforms;
-
-
-using UnityEngine.SocialPlatforms;
-
 public class CanvasSwitching : MonoBehaviour {
 
 	public GameObject MainMenu;
@@ -18,7 +14,7 @@ public class CanvasSwitching : MonoBehaviour {
 
 	public Text newsMessage;
 
-	static string urlConfig = "http://users.aber.ac.uk/cgh2/marithmetic.config";
+	static string urlConfig = "http://213.171.209.132//marithmetic.config";
 	public string fetchedString;
 
 	public void OnMainMenuCustomGameSetupClick(){
@@ -96,8 +92,6 @@ public class CanvasSwitching : MonoBehaviour {
 				PlayerPrefs.SetString (References.NEWS_TEXT,line.Replace("newsText=",""));
 			}else if(line.Contains ("websiteLink=")){
 				PlayerPrefs.SetString (References.WEBSITE_LINK,line.Replace("websiteLink=",""));
-			}else if(line.Contains("twitterPage=")){
-				PlayerPrefs.SetString (References.TWITTER_LINK, line.Replace("twitterPage=",""));
 			}else if(line.Contains ("myAppsLink=")){
 				PlayerPrefs.SetString (References.MYAPPS_LINK, line.Replace("myAppsLink=",""));
 			}else if(line.Contains ("appStorePage")){

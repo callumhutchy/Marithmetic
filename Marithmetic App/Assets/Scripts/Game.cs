@@ -38,9 +38,13 @@ public class Game : MonoBehaviour {
 
 	public GameObject addButtonDisabled, subtractButtonDisabled, multiplyButtonDisabled, divideButtonDisabled;
 
-	public GameObject subtractAlert;
-	public GameObject divisionAlert;
-	public GameObject homeAlert;
+	public GameObject alertPanel;
+	public GameObject okButton;
+	public GameObject yesNoButton;
+	public TMPro.TMP_Text alertText;
+	public string subtractAlertString;
+	public string divisionAlertString;
+	public string homeAlertString;
 
 	public GameObject timeTotal;
 
@@ -72,7 +76,9 @@ public class Game : MonoBehaviour {
 	public Text totalNumberText;
 
 	public void OnGameBackButtonClick(){
-		homeAlert.SetActive (true);
+		alertText.text = homeAlertString;
+		yesNoButton.SetActive(true);
+		alertPanel.SetActive (true);
 
 	}
 
@@ -202,7 +208,9 @@ public class Game : MonoBehaviour {
 			}
 
 			if(usersTotal == -1){
-				subtractAlert.SetActive(true);
+				alertText.text = subtractAlertString;
+				okButton.SetActive(true);
+				alertPanel.SetActive(true);
 				ClearLastLine();
 				tempButton1Disabled.SetActive(false);
 				tempButton2Disabled.SetActive(false);
@@ -212,8 +220,9 @@ public class Game : MonoBehaviour {
 				tempButton2.GetComponent<Button>().enabled = true;
 				number1selected = operationselected = number2selected = false;
 			}else if(usersTotal == -2){
-
-				divisionAlert.SetActive(true);
+				alertText.text = divisionAlertString;
+				okButton.SetActive(true);
+				alertPanel.SetActive(true);
 				ClearLastLine();
 				tempButton1Disabled.SetActive(false);
 				tempButton2Disabled.SetActive(false);
@@ -823,22 +832,26 @@ public class Game : MonoBehaviour {
 
 
 	public void OnSubtractAlertOkButtonClick(){
-		subtractAlert.SetActive (false);
+		alertPanel.SetActive (false);
+		okButton.SetActive(false);
 	}
 	public void OnDivisionAlertOkButtonClick(){
-		divisionAlert.SetActive (false);
+		alertPanel.SetActive (false);
+		okButton.SetActive(false);
 	}
 
 	public void OnHomeAlertYesButtonClick(){
 		ClearArray ();
 		DisplayNumbers ();
 		Reset ();
-		homeAlert.SetActive (false);
+		alertPanel.SetActive (false);
+		yesNoButton.SetActive(false);
 		MainMenuCanvas.SetActive (true);
 		GameCanvas.SetActive (false);
 	}
 	public void OnHomeAlertNoButtonClick(){
-		homeAlert.SetActive (false);
+		alertPanel.SetActive (false);
+		yesNoButton.SetActive(false);
 	}
 
 	public void OnResetButtonClick(){

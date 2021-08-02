@@ -1,5 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CustomGame : MonoBehaviour {
@@ -15,15 +18,15 @@ public class CustomGame : MonoBehaviour {
 	public GameObject CustomGameSetup;
 	public GameObject GameCanvas;
 
-	public GameObject bigNumberAlert;
-	public GameObject enoughNumbersAlert;
+	public GameObject alertPanel;
+	public TMP_Text alertText;
+	public string bigNumberAlertString;
+	public string enoughNumbersAlertString;
 
 	public GameObject EasyButton;
-	public GameObject MediumButton;
 	public GameObject HardButton;
 
 	public GameObject EasyDisabledButton;
-	public GameObject MediumDisabledButton;
 	public GameObject HardDisabledButton;
 
 	public Text number1;
@@ -33,17 +36,21 @@ public class CustomGame : MonoBehaviour {
 	public Text number5;
 	public Text number6;
 
-	public static bool reset = false;
+	Text[] numberTexts;
 
+	public static bool reset = false;
 
 	// Use this for initialization
 	void Start () {
+
+		numberTexts = new Text[] { number1, number2, number3, number4, number5, number6 };
+
 		ClearArray ();
 		DisplayNumbers ();
 		reset = false;
 		OnEasyButtonClick ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (reset) {
@@ -53,226 +60,72 @@ public class CustomGame : MonoBehaviour {
 
 	}
 
-	public void OnHighClick(){
+	public void OnHighClick () {
 		if (currentPosition < maxAmountOfNumbers && numberOfHighNumbers < 4) {
 			addNumberToArray (GenerateHighNumber ());
 			numberOfHighNumbers++;
 		} else if (numberOfHighNumbers >= 4) {
-			bigNumberAlert.SetActive (true);
+			alertText.text = bigNumberAlertString;
+			alertPanel.SetActive (true);
 		} else if (currentPosition >= maxAmountOfNumbers) {
-			enoughNumbersAlert.SetActive(true);
+			alertText.text = enoughNumbersAlertString;
+			alertPanel.SetActive (true);
 		}
 	}
 
-	public void OnLowClick(){
+	public void OnLowClick () {
 		if (currentPosition < maxAmountOfNumbers) {
-			addNumberToArray(GenerateLowNumber());
+			addNumberToArray (GenerateLowNumber ());
 			numberOfSmall++;
-		}else if (currentPosition >= maxAmountOfNumbers) {
-			enoughNumbersAlert.SetActive(true);
+		} else if (currentPosition >= maxAmountOfNumbers) {
+			alertText.text = enoughNumbersAlertString;
+			alertPanel.SetActive (true);
 		}
 	}
 
-	void DisplayNumbers(){
-		if (numberArray [0] != 0) {
-			number1.text = numberArray [0].ToString ();
-		} else {
-			number1.text = "";
-		}
-		if (numberArray [1] != 0) {
-			number2.text = numberArray [1].ToString ();
-		}else {
-			number2.text = "";
-		}
-		if (numberArray [2] != 0) {
-			number3.text = numberArray [2].ToString ();
-		}else {
-			number3.text = "";
-		}
-		if (numberArray [3] != 0) {
-			number4.text = numberArray [3].ToString ();
-		}else {
-			number4.text = "";
-		}
-		if (numberArray [4] != 0) {
-			number5.text = numberArray [4].ToString ();
-		}else {
-			number5.text = "";
-		}
-		if (numberArray [5] != 0) {
-			number6.text = numberArray [5].ToString ();
-		}else {
-			number6.text = "";
+	void DisplayNumbers () {
+		for(int i =0; i < 6;i++){
+			numberTexts[i].text = (numberArray[i] != 0) ? numberArray[i].ToString() : "";
 		}
 	}
 
-	void addNumberToArray(int number){
+	void addNumberToArray (int number) {
 		if (currentPosition < 6) {
-			numberArray [currentPosition] = number;
+			numberArray[currentPosition] = number;
 			currentPosition++;
 		}
-
-
-
 	}
 
-	int GenerateHighNumber(){
-		int random = Random.Range (1, 5);
-		int number = 0;
-		switch (random) {
-		case 1:
-			if(!checkIfArrayContains(25)){
-			number = 25;
-			}else{
-				number = GenerateHighNumber();
-			}
-			break;
-		case 2:
-			if(!checkIfArrayContains(50)){
-				number = 50;
-			}else{
-				number = GenerateHighNumber();
-			}
-			break;
-		case 3: 
-			if(!checkIfArrayContains(75)){
-				number = 75;
-			}else{
-				number = GenerateHighNumber();
-			}
-			break;
-		case 4:
-			if(!checkIfArrayContains(100)){
-				number = 100;
-			}else{
-				number = GenerateHighNumber();
-			}
-			break;
-		}
-
-		return number;
-
+	int GenerateHighNumber () {
+		int random = Random.Range (0, 4);
+		int[] bigNumbers = new int[] { 25, 50, 75, 100 };
+		return checkIfArrayContainsBig (bigNumbers[random]);
 	}
 
-	int generateHighNumberAtEnd(){
-		int random = Random.Range (1,5);
-		switch (random) {
-		case 1:
-			return 25;
-		case 2:
-			return 50;
-		case 3:
-			return 75;
-		case 4:
-			return 100;
-		}
-		return 0;
-
-	}
-
-	int GenerateLowNumber(){
-		int number = 0;
+	int GenerateLowNumber () {
 		int random = Random.Range (1, 11);
-
-		switch (random) {
-		case 1:
-			if(!checkIfArrayContains(1)){
-				number = 1;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 2:
-			if(!checkIfArrayContains(2)){
-				number = 2;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 3:
-			if(!checkIfArrayContains(3)){
-				number = 3;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 4:
-			if(!checkIfArrayContains(4)){
-				number = 4;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 5:
-			if(!checkIfArrayContains(5)){
-				number = 5;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 6:
-			if(!checkIfArrayContains(6)){
-				number = 6;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 7:
-			if(!checkIfArrayContains(7)){
-				number = 7;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 8:
-			if(!checkIfArrayContains(8)){
-				number = 8;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 9:
-			if(!checkIfArrayContains(9)){
-				number = 9;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-		case 10:
-			if(!checkIfArrayContains(10)){
-				number = 10;
-			}else{
-				number = GenerateLowNumber();
-			}
-			break;
-
-		}
-
-		return number;
-
+		return checkIfArrayContainsLow (random);
 	}
 
-	void ClearArray(){
-
+	void ClearArray () {
 		for (int i = 0; i < maxAmountOfNumbers; i++) {
 			numberArray[i] = 0;
 		}
-			}
+	}
 
-	public void OnCustomGameSetupBackButtonClick(){
+	public void OnCustomGameSetupBackButtonClick () {
 		ClearArray ();
 		DisplayNumbers ();
 		numberOfHighNumbers = 0;
 		currentPosition = 0;
-		MainMenu.SetActive(true);
-		CustomGameSetup.SetActive(false);
+		MainMenu.SetActive (true);
+		CustomGameSetup.SetActive (false);
 
-		
 	}
 
-	public void OnCustomGameSetupConfirmButtonClick(){
+	public void OnCustomGameSetupConfirmButtonClick () {
 		for (int i = 0; i < numberArray.Length; i++) {
-			Debug.Log(numberArray[i] + " before");
+			Debug.Log (numberArray[i] + " before");
 		}
 		Game.numberOfBigs = numberOfHighNumbers;
 		Game.numberOfSmalls = numberOfSmall;
@@ -287,53 +140,38 @@ public class CustomGame : MonoBehaviour {
 
 	}
 
-	public void OnBigNumberAlertOkButtonClick(){
-		bigNumberAlert.SetActive (false);
+	public void OnBigNumberAlertOkButtonClick () {
+		alertPanel.SetActive (false);
 	}
 
-	bool checkIfArrayContains(int number){
-		for (int i = 0; i<maxAmountOfNumbers; i++) {
-			if(numberArray[i] == number){
-				return true;
-			}
-
+	int checkIfArrayContainsBig (int number) {
+		if (!numberArray.Contains (number)) {
+			return number;
+		} else {
+			return GenerateHighNumber ();
 		}
-		return false;
-
 	}
 
-	public void OnEnoughNumbersAlertOkButtonClick(){
-		enoughNumbersAlert.SetActive (false);
+	int checkIfArrayContainsLow (int number) {
+		if (!numberArray.Contains (number)) {
+			return number;
+		} else {
+			return GenerateLowNumber ();
+		}
 	}
 
-	public void OnEasyButtonClick(){
+	public void OnEnoughNumbersAlertOkButtonClick () {
+		alertPanel.SetActive (false);
+	}
+
+	public void OnEasyButtonClick () {
 		EasyDisabledButton.SetActive (true);
 		PlayerPrefs.SetString (References.DIFFICULTY_LEVEL, "easy");
-		MediumDisabledButton.SetActive (false);
 		HardDisabledButton.SetActive (false);
 	}
-	public void OnMediumButtonClick(){
-		MediumDisabledButton.SetActive (true);
-		PlayerPrefs.SetString (References.DIFFICULTY_LEVEL, "medium");
-		EasyDisabledButton.SetActive (false);
-		HardDisabledButton.SetActive (false);
-	}
-	public void OnHardButtonClick(){
+	public void OnHardButtonClick () {
 		HardDisabledButton.SetActive (true);
 		PlayerPrefs.SetString (References.DIFFICULTY_LEVEL, "hard");
 		EasyDisabledButton.SetActive (false);
-		MediumDisabledButton.SetActive (false);
 	}
-	public void OnEasyDisabledButtonClick(){
-		//EasyDisabledButton.SetActive (false);
-	}
-	public void OnMediumDisabledButtonClick(){
-		//MediumDisabledButton.SetActive (false);
-	}
-	public void OnHardDisabledButtonClick(){
-		//HardDisabledButton.SetActive (false);
-	}
-
-
-
 }
