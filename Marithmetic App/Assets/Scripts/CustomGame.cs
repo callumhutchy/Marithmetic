@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 
 public class CustomGame : MonoBehaviour {
 
@@ -42,7 +43,8 @@ public class CustomGame : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		
+		Advertisement.Initialize("4244889", true);
 		numberTexts = new Text[] { number1, number2, number3, number4, number5, number6 };
 
 		ClearArray ();
@@ -127,6 +129,7 @@ public class CustomGame : MonoBehaviour {
 		for (int i = 0; i < numberArray.Length; i++) {
 			Debug.Log (numberArray[i] + " before");
 		}
+		Advertisement.Show();
 		Game.numberOfBigs = numberOfHighNumbers;
 		Game.numberOfSmalls = numberOfSmall;
 		currentPosition = 0;
