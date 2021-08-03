@@ -79,7 +79,6 @@ public class Game : MonoBehaviour {
 		alertText.text = homeAlertString;
 		yesNoButton.SetActive(true);
 		alertPanel.SetActive (true);
-
 	}
 
 
@@ -88,9 +87,7 @@ public class Game : MonoBehaviour {
 		Reset ();
 		totalNumber = GenerateSuitableNumber ();
 		totalNumberText.text = totalNumber.ToString ();
-
 		reset = false;
-
 	}
 
 	void Reset(){
@@ -780,6 +777,7 @@ public class Game : MonoBehaviour {
 			
 		}
 	}
+	
 	public void OnDivideButtonClick(){
 		if (number1selected && !operationselected && !number2selected) {
 			divideButton.GetComponent<Button> ().enabled = false;
@@ -805,6 +803,7 @@ public class Game : MonoBehaviour {
 			operationselected = false;
 		}
 	}
+
 	public void OnSubtractButtonDisabledClick(){
 		if (number1selected == true && operationselected == true && number2selected == false) {
 			subtractButton.GetComponent<Button> ().enabled = true;
@@ -813,6 +812,7 @@ public class Game : MonoBehaviour {
 			operationselected = false;
 		}
 	}
+
 	public void OnMultiplyButtonDisabledClick(){
 		if (number1selected == true && operationselected == true && number2selected == false) {
 			multiplyButton.GetComponent<Button> ().enabled = true;
@@ -821,6 +821,7 @@ public class Game : MonoBehaviour {
 			operationselected = false;
 		}
 	}
+
 	public void OnDivideButtonDisabledClick(){
 		if (number1selected == true && operationselected == true && number2selected == false) {
 			divideButton.GetComponent<Button> ().enabled = true;
@@ -829,7 +830,6 @@ public class Game : MonoBehaviour {
 			operationselected = false;
 		}
 	}
-
 
 	public void OnSubtractAlertOkButtonClick(){
 		alertPanel.SetActive (false);
@@ -859,8 +859,4 @@ public class Game : MonoBehaviour {
 		PlayerPrefs.SetInt (References.NUMBER_OF_RESETS, PlayerPrefs.GetInt (References.NUMBER_OF_RESETS) + 1);
 		Reset ();
 	}
-
-
-
-
 }
