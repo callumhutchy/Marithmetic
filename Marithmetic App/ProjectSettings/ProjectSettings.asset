@@ -149,7 +149,7 @@ PlayerSettings:
     Android: uk.co.callumhutchy.amazon.marithmetic
     Standalone: unity.Callumhutchy.Marithmetic
     Tizen: uk.co.callumhutchy.amazon.marithmetic
-    iPhone: uk.co.callumhutchy.amazon.marithmetic
+    iPhone: com.Callumhutchy.Marithmetic
     tvOS: uk.co.callumhutchy.amazon.marithmetic
   buildNumber:
     Standalone: 0
@@ -690,7 +690,7 @@ PlayerSettings:
     WP8: 2
     WebGL: 1
     Windows Store Apps: 2
-    iPhone: 0
+    iPhone: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
   incrementalIl2cppBuild:
@@ -797,7 +797,7 @@ PlayerSettings:
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: Marithmetic
-  organizationId: callumhutchy-7307fc9a-ebc7-4818-8909-723bff9268c8
+  organizationId: rag-tag-games
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 1
   virtualTexturingSupportEnabled: 0
