@@ -1,4 +1,4 @@
-﻿Marithmetic App/.vs
+Marithmetic App/.vs
 Countdown Maths/Library
 Marithmetic App/.vscode
 Marithmetic App/obj
@@ -9,3 +9,4 @@ Marithmetic App/*.csproj
 Marithmetic App/*.apk
 Marithmetic App/Temp
 Marithmetic App/Marithmetic App.sln
+Marithmetic App/Builds
