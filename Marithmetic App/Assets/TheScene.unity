@@ -5383,9 +5383,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 886205768}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnBigNumberAlertOkButtonClick
+      - m_Target: {fileID: 1238819793}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_MethodName: OnAlertOkButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6627,7 +6627,7 @@ MonoBehaviour:
   m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -12849,7 +12849,7 @@ MonoBehaviour:
   subtractButtonDisabled: {fileID: 38474966}
   multiplyButtonDisabled: {fileID: 363106499}
   divideButtonDisabled: {fileID: 841563415}
-  alertPanel: {fileID: 817391095}
+  alertPanel: {fileID: 329836010}
   okButton: {fileID: 574529014}
   yesNoButton: {fileID: 1928860840}
   alertText: {fileID: 464871306}
@@ -18111,8 +18111,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1238819793}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnHomeAlertNoButtonClick
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_MethodName: OnAlertNoButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20673,8 +20673,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1238819793}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnHomeAlertYesButtonClick
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_MethodName: OnAlertYesButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

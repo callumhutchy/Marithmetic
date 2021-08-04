@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using UnityEngine.Advertisements;
 public class CompleteGame : MonoBehaviour {
 
 	public GameObject gameCompleteCanvas;
@@ -49,6 +49,7 @@ public class CompleteGame : MonoBehaviour {
 		customGameCanvas.SetActive (true);
 		gameCompleteCanvas.SetActive (false);
 		CustomGame.reset = true;
+		Advertisement.Show();
 	}
 	public void OnHomeButtonClick(){
 		homeCanvas.SetActive (true);

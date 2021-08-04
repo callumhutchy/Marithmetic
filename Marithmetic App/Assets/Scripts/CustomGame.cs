@@ -127,7 +127,7 @@ public class CustomGame : MonoBehaviour {
 		for (int i = 0; i < numberArray.Length; i++) {
 			Debug.Log (numberArray[i] + " before");
 		}
-		Advertisement.Show();
+		//Advertisement.Show();
 		Game.numberOfBigs = numberOfHighNumbers;
 		Game.numberOfSmalls = numberOfSmall;
 		currentPosition = 0;
