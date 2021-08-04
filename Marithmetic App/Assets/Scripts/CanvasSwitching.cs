@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
+using TMPro;
 public class CanvasSwitching : MonoBehaviour {
 
 	public GameObject MainMenu;
@@ -13,7 +14,7 @@ public class CanvasSwitching : MonoBehaviour {
 	public GameObject AboutCanvas;
 	public GameObject StatsCanvas;
 
-	public Text newsMessage;
+	public TMP_Text newsMessage;
 
 	static string urlConfig = "http://213.171.209.132//marithmetic.config";
 	public string fetchedString;

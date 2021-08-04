@@ -30,22 +30,20 @@ public class CustomGame : MonoBehaviour {
 	public GameObject EasyDisabledButton;
 	public GameObject HardDisabledButton;
 
-	public Text number1;
-	public Text number2;
-	public Text number3;
-	public Text number4;
-	public Text number5;
-	public Text number6;
+	public TMP_Text number1;
+	public TMP_Text number2;
+	public TMP_Text number3;
+	public TMP_Text number4;
+	public TMP_Text number5;
+	public TMP_Text number6;
 
-	Text[] numberTexts;
+	TMP_Text[] numberTexts;
 
 	public static bool reset = false;
 
 	// Use this for initialization
 	void Start () {
-		
-		Advertisement.Initialize("4244889", true);
-		numberTexts = new Text[] { number1, number2, number3, number4, number5, number6 };
+		numberTexts = new TMP_Text[] { number1, number2, number3, number4, number5, number6 };
 
 		ClearArray ();
 		DisplayNumbers ();
@@ -169,12 +167,12 @@ public class CustomGame : MonoBehaviour {
 
 	public void OnEasyButtonClick () {
 		EasyDisabledButton.SetActive (true);
-		PlayerPrefs.SetString (References.DIFFICULTY_LEVEL, "easy");
+		PlayerPrefs.SetString (References.DIFFICULTY_LEVEL, "beginner");
 		HardDisabledButton.SetActive (false);
 	}
 	public void OnHardButtonClick () {
 		HardDisabledButton.SetActive (true);
-		PlayerPrefs.SetString (References.DIFFICULTY_LEVEL, "hard");
+		PlayerPrefs.SetString (References.DIFFICULTY_LEVEL, "experienced");
 		EasyDisabledButton.SetActive (false);
 	}
 }
