@@ -4,11 +4,12 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Game : MonoBehaviour {
 
 	public static int[] numberArray = new int[6];
 	ArrayList totalArrayList = new ArrayList ();
-
+	
 	public GameObject GameCanvas;
 	public GameObject MainMenuCanvas;
 	public GameObject GameCompleteCanvas;
@@ -164,7 +165,7 @@ public class Game : MonoBehaviour {
 
 		updatedTime = Time.time - startTime;
 
-		Debug.Log (updatedTime.ToString ());
+		//Debug.Log (updatedTime.ToString ());
 		int minutes = (int) updatedTime / 60;
 		int seconds = (int) updatedTime % 60;
 
@@ -175,6 +176,7 @@ public class Game : MonoBehaviour {
 		if (number1selected && operationselected && number2selected) {
 
 			usersTotal = applyOperation ();
+			Debug.Log("Users total = " + usersTotal);
 			if (usersTotal == totalNumber) {
 				ClearArray ();
 				DisplayNumbers ();
@@ -245,11 +247,12 @@ public class Game : MonoBehaviour {
 
 			} else {
 
-				tempButton1.GetComponentInChildren<Text> ().text = usersTotal.ToString ();
-				tempButton1Disabled.GetComponentInChildren<Text> ().text = usersTotal.ToString ();
+				tempButton1.GetComponentInChildren<TMP_Text> ().text = usersTotal.ToString ();
+				tempButton1Disabled.GetComponentInChildren<TMP_Text> ().text = usersTotal.ToString ();
 				tempButton1Disabled.SetActive (false);
 				tempButton1.GetComponent<Button> ().enabled = true;
 				tempButton2Disabled.SetActive (false);
+				tempButton2.GetComponentInChildren<TMP_Text>().text = "";
 				tempButton2Grey.SetActive (true);
 				tempOperationButtonDisabled.SetActive (false);
 				tempOperationButton.GetComponent<Button> ().enabled = true;
@@ -263,6 +266,7 @@ public class Game : MonoBehaviour {
 	void DisplayNumbers () {
 		for (int i = 0; i < 6; i++) {
 			if (numberArray[i] != 0) {
+				Debug.Log(numberArray[i]);
 				numberButtons[i].numberText.text = numberArray[i].ToString ();
 				numberButtons[i].numberDisabledText.text = numberArray[i].ToString ();
 			} else {
@@ -458,13 +462,11 @@ public class Game : MonoBehaviour {
 				} else {
 					return -2;
 				}
-
 			default:
 				return 1;
-
 		}
-
 	}
+
 	public void OnNumberButtonClick (NumberButton nb) {
 		if (!number1selected && !operationselected && !number2selected) {
 			nb.number.GetComponent<Button> ().enabled = false;
@@ -498,7 +500,7 @@ public class Game : MonoBehaviour {
 	public void OnOperationButtonClick (OperationButton ob) {
 		if (number1selected && !operationselected && !number2selected) {
 			ob.button.enabled = false;
-			addToTextArea (ob.button.GetComponentInChildren<Text> ().text);
+			addToTextArea (ob.button.GetComponentInChildren<TMP_Text> ().text);
 			ob.disabledGameObject.SetActive (true);
 			operationselected = true;
 			tempOperationButton = ob.gameObject;
@@ -514,7 +516,7 @@ public class Game : MonoBehaviour {
 	public void OnOperationButtonDisabledClick (OperationButton ob) {
 		if (number1selected && operationselected && !number2selected) {
 			ob.button.enabled = true;
-			takeAwayText (ob.gameObject.GetComponentInChildren<Text> ().text);
+			takeAwayText (ob.gameObject.GetComponentInChildren<TMP_Text> ().text);
 			ob.disabledGameObject.SetActive (false);
 			operationselected = false;
 		}
