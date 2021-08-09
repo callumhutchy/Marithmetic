@@ -18,7 +18,8 @@ public class CustomGame : MonoBehaviour {
 	public GameObject MainMenu;
 	public GameObject CustomGameSetup;
 	public GameObject GameCanvas;
-
+	public GameObject highGreyButton;
+	public Button highButton;
 	public GameObject alertPanel;
 	public TMP_Text alertText;
 	public string bigNumberAlertString;
@@ -70,6 +71,10 @@ public class CustomGame : MonoBehaviour {
 		} else if (currentPosition >= maxAmountOfNumbers) {
 			alertText.text = enoughNumbersAlertString;
 			alertPanel.SetActive (true);
+		}
+		if(numberOfHighNumbers >= 4 && !highGreyButton.active){
+			highGreyButton.SetActive(true);
+			highButton.enabled = false;
 		}
 	}
 
